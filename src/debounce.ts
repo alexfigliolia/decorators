@@ -14,6 +14,7 @@ export function debounce(wait: number) {
         clear();
         timer = setTimeout(() => {
           original.call(this, ...args);
+          clear();
         }, wait);
       };
     },
