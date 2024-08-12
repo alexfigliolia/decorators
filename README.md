@@ -163,7 +163,7 @@ import { createClassDecorator } from "@figliolia/decorators";
 const myClassDecorator = createClassDecorator((original, context) => {
   return class extends original {
     public newMethod() {
-      // Add a method
+      // Add a new method
     }
 
     public override existingMethod() {
