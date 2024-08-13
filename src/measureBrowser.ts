@@ -1,13 +1,15 @@
-import { createMethodDecorator } from "./generators";
+import type { DecoratorFunction, GenericFunction } from "./types";
+import { extractName } from "./utilities";
 
-export const measureBrowser = createMethodDecorator((original, context) => {
-  return function (this, ...args) {
-    let name: string;
-    if (context.static) {
-      ({ name } = this);
-    } else {
-      ({ name } = this.constructor);
-    }
+export function measureBrowser<F extends GenericFunction>(
+  original: F,
+  context: ClassMethodDecoratorContext<
+    ThisParameterType<F>,
+    DecoratorFunction<ThisParameterType<F>, F>
+  >,
+) {
+  return function (this: ThisParameterType<F>, ...args: Parameters<F>) {
+    const name = extractName(this, context);
     const then = performance.now();
     const value = original.call(this, ...args);
     if (value instanceof Promise) {
@@ -31,4 +33,4 @@ export const measureBrowser = createMethodDecorator((original, context) => {
     }
     return value;
   };
-});
+}

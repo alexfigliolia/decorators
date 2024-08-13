@@ -1,4 +1,3 @@
-export * from "./generators";
 export { bound } from "./bound";
 export { chainable } from "./chainable";
 export { debounce } from "./debounce";

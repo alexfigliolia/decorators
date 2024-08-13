@@ -1,12 +1,12 @@
-import { createMethodDecorator } from "./generators";
-import type { GenericClass, GenericFunction } from "./types";
+import type { GenericFunction } from "./types";
 
-export const bound = createMethodDecorator<
-  Record<string | symbol, any> & GenericClass,
-  GenericFunction
->((original, context) => {
-  context.addInitializer(function (this) {
-    this[context.name] = this[context.name].bind(this);
+export function bound<F extends GenericFunction>(
+  original: F,
+  context: ClassMethodDecoratorContext<ThisParameterType<F>, F>,
+) {
+  context.addInitializer(function (this: ThisParameterType<F>) {
+    const self = this as Record<string | symbol, any>;
+    self[context.name] = self[context.name].bind(this);
   });
   return original;
-});
+}

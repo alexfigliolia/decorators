@@ -1,13 +1,12 @@
-import { createMethodDecorator } from "./generators";
+import type { GenericFunction } from "./types";
+import { extractName } from "./utilities";
 
-export const measureServer = createMethodDecorator((original, context) => {
-  return function (this, ...args) {
-    let name: string;
-    if (context.static) {
-      ({ name } = this);
-    } else {
-      ({ name } = this.constructor);
-    }
+export function measureServer<F extends GenericFunction>(
+  original: F,
+  context: ClassMethodDecoratorContext<ThisParameterType<F>, F>,
+) {
+  return function (this: ThisParameterType<F>, ...args: Parameters<F>) {
+    const name = extractName(this, context);
     const Chalk = require("chalk");
     const { performance } = require("node:perf_hooks");
     const then = performance.now();
@@ -31,4 +30,4 @@ export const measureServer = createMethodDecorator((original, context) => {
     }
     return value;
   };
-});
+}

@@ -1,10 +1,11 @@
-import { createMethodDecorator } from "./generators";
+import type { GenericFunction } from "./types";
 
-export const chainable = createMethodDecorator<any, (...args: any[]) => void>(
-  original => {
-    return function (this, ...args) {
-      original.call(this, ...args);
-      return this;
-    };
-  },
-);
+export function chainable<F extends GenericFunction>(
+  original: F,
+  _context: ClassMethodDecoratorContext<ThisParameterType<F>, F>,
+) {
+  return function (this: ThisParameterType<F>, ...args: Parameters<F>) {
+    original.call(this, ...args);
+    return this;
+  };
+}

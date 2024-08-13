@@ -1,16 +1,15 @@
-import { createMethodDecorator } from "./generators";
+import type { GenericFunction } from "./types";
+import { extractName } from "./utilities";
 
-export const logServer = createMethodDecorator((original, context) => {
+export function logServer<F extends GenericFunction>(
+  original: F,
+  context: ClassMethodDecoratorContext<ThisParameterType<F>, F>,
+) {
   if (process.env.NODE_ENV === "production") {
     return original;
   }
-  return function (this, ...args) {
-    let name: string;
-    if (context.static) {
-      ({ name } = this);
-    } else {
-      ({ name } = this.constructor);
-    }
+  return function (this: ThisParameterType<F>, ...args: Parameters<F>) {
+    const name = extractName(this, context);
     const v = original.call(this, ...args);
     void import("chalk").then(({ default: Chalk }) => {
       console.log(
@@ -39,4 +38,4 @@ export const logServer = createMethodDecorator((original, context) => {
     });
     return v;
   };
-});
+}

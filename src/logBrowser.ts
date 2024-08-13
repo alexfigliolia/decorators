@@ -1,16 +1,18 @@
-import { createMethodDecorator } from "./generators";
+import type { DecoratorFunction, GenericFunction } from "./types";
+import { extractName } from "./utilities";
 
-export const logBrowser = createMethodDecorator((original, context) => {
+export function logBrowser<F extends GenericFunction>(
+  original: F,
+  context: ClassMethodDecoratorContext<
+    ThisParameterType<F>,
+    DecoratorFunction<ThisParameterType<F>, F>
+  >,
+): DecoratorFunction<ThisParameterType<F>, F> {
   if (process.env.NODE_ENV === "production") {
     return original;
   }
-  return function (this, ...args) {
-    let name: string;
-    if (context.static) {
-      ({ name } = this);
-    } else {
-      ({ name } = this.constructor);
-    }
+  return function (this, ...args: Parameters<F>) {
+    const name = extractName(this, context);
     console.log(
       "%cCalling:",
       "color: #26ad65; font-weight: bold",
@@ -40,4 +42,4 @@ export const logBrowser = createMethodDecorator((original, context) => {
     }
     return v;
   };
-});
+}

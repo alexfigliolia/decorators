@@ -1,22 +1,23 @@
-import { createMethodDecorator } from "./generators";
+import type { GenericFunction } from "./types";
 
 export function debounce(wait: number) {
-  return createMethodDecorator<any, (...args: any[]) => void>(
-    (original, _context) => {
-      let timer: ReturnType<typeof setTimeout> | null = null;
-      const clear = () => {
-        if (timer) {
-          clearTimeout(timer);
-          timer = null;
-        }
-      };
-      return function (this, ...args) {
+  return function <F extends GenericFunction>(
+    original: F,
+    _context: ClassMethodDecoratorContext<ThisParameterType<F>, F>,
+  ) {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const clear = () => {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+    };
+    return function (this: ThisParameterType<F>, ...args: Parameters<F>) {
+      clear();
+      timer = setTimeout(() => {
+        original.call(this, ...args);
         clear();
-        timer = setTimeout(() => {
-          original.call(this, ...args);
-          clear();
-        }, wait);
-      };
-    },
-  );
+      }, wait);
+    };
+  };
 }

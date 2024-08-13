@@ -10,7 +10,7 @@ npm i @figliolia/decorators
 yarn add @figliolia/decorators
 ```
 
-## API - Decoratators
+## API
 
 1. [Bound](#bound)
 2. [Cache](#cache)
@@ -22,10 +22,6 @@ yarn add @figliolia/decorators
 8. [Measure Browser](#measure-browser)
 9. [Measure Server](#measure-server)
 10. [Unsafe Chainable](#unsafe-chainable)
-
-## API - Generators
-1. [Create Method Decorator](#create-method-decorator)
-2. [Create Class Decorator](#create-class-decorator)
 
 ### Bound
 Implicitely bind class methods to their instances
@@ -217,47 +213,6 @@ class MyClass {
 
 const instance = new MyClass().method1().method(2);
 // instance = MyClass
-```
-
-### Create Method Decorator
-A generator accepting a callback returning a new class method decorator
-```typescript
-import { createMethodDecorator } from "@figliolia/decorators";
-
-const myMethodDecorator = createMethodDecorator((original, context) => {
-  return function(this, ...args) {
-    // your logic
-  }
-});
-```
-
-Using stricter types
-```typescript
-import { createMethodDecorator } from "@figliolia/decorators";
-
-const myStrictDecorator = createMethodDecorator<MyClass, MyMethod>((original, context) => {
-  return function(this, ...args) {
-    // your logic
-  }
-});
-```
-
-### Create Class Decorator
-A generator accepting a callback returning a new class decorator
-```typescript
-import { createClassDecorator } from "@figliolia/decorators";
-
-const myClassDecorator = createClassDecorator((original, context) => {
-  return class extends original {
-    public newMethod() {
-      // Add a new method
-    }
-
-    public override existingMethod() {
-      // override an existing method
-    }
-  }
-});
 ```
 
 ## Stage 3 Decorator Proposal Vs. Experimental Decorators

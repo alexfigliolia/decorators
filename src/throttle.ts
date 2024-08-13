@@ -1,7 +1,10 @@
-import { createMethodDecorator } from "./generators";
+import type { GenericFunction } from "./types";
 
 export function throttle(wait: number) {
-  return createMethodDecorator<any, (...args: any[]) => void>(original => {
+  return function <F extends GenericFunction>(
+    original: F,
+    _context: ClassMethodDecoratorContext<ThisParameterType<F>, F>,
+  ) {
     let timer: ReturnType<typeof setTimeout> | null = null;
     const clear = () => {
       if (timer) {
@@ -9,7 +12,7 @@ export function throttle(wait: number) {
         timer = null;
       }
     };
-    return function (this, ...args) {
+    return function (this: ThisParameterType<F>, ...args: Parameters<F>) {
       if (timer) {
         return;
       }
@@ -18,5 +21,5 @@ export function throttle(wait: number) {
         clear();
       }, wait);
     };
-  });
+  };
 }
