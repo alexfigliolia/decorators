@@ -1,6 +1,6 @@
 {
   "name": "@figliolia/decorators",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Decorators for everyday programming",
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",

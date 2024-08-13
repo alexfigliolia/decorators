@@ -1,5 +1,10 @@
 import type { GenericFunction } from "./types";
 
+/**
+ * animationFrame
+ *
+ * Executes the target method inside calls to `requestAnimationFrame`
+ */
 export function animationFrame<F extends GenericFunction>(
   original: F,
   _context: ClassMethodDecoratorContext<ThisParameterType<F>, F>,

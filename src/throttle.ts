@@ -1,5 +1,11 @@
 import type { GenericFunction } from "./types";
 
+/**
+ * throttle
+ *
+ * Throttles calls to the target method by the specified
+ * wait time
+ */
 export function throttle(wait: number) {
   return function <F extends GenericFunction>(
     original: F,

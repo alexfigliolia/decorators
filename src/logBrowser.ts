@@ -1,6 +1,11 @@
 import type { DecoratorFunction, GenericFunction } from "./types";
 import { extractName } from "./utilities";
 
+/**
+ * logBrowser
+ *
+ * Logs parameters and return values for the target method
+ */
 export function logBrowser<F extends GenericFunction>(
   original: F,
   context: ClassMethodDecoratorContext<

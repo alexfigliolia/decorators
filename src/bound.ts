@@ -1,5 +1,11 @@
 import type { GenericFunction } from "./types";
 
+/**
+ * bound
+ *
+ * Binds the target method to the instance in which
+ * it's defined
+ */
 export function bound<F extends GenericFunction>(
   original: F,
   context: ClassMethodDecoratorContext<ThisParameterType<F>, F>,

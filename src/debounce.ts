@@ -1,5 +1,10 @@
 import type { GenericFunction } from "./types";
 
+/**
+ * debounce
+ *
+ * Debounces the target method by the specified wait time
+ */
 export function debounce(wait: number) {
   return function <F extends GenericFunction>(
     original: F,

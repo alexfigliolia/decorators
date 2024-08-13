@@ -1,6 +1,11 @@
 import type { GenericFunction } from "./types";
 import { extractName } from "./utilities";
 
+/**
+ * logServer
+ *
+ * Logs parameters and return values for the target method
+ */
 export function logServer<F extends GenericFunction>(
   original: F,
   context: ClassMethodDecoratorContext<ThisParameterType<F>, F>,

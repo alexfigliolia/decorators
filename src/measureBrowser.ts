@@ -1,6 +1,12 @@
 import type { DecoratorFunction, GenericFunction } from "./types";
 import { extractName } from "./utilities";
 
+/**
+ * measureBrowser
+ *
+ * Measures the duration of all calls to the target method
+ * and logs it to the console
+ */
 export function measureBrowser<F extends GenericFunction>(
   original: F,
   context: ClassMethodDecoratorContext<

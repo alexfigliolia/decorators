@@ -1,6 +1,12 @@
 import type { GenericFunction } from "./types";
 import { extractName } from "./utilities";
 
+/**
+ * measureServer
+ *
+ * Measures the duration of all calls to the target method
+ * and logs it to the console
+ */
 export function measureServer<F extends GenericFunction>(
   original: F,
   context: ClassMethodDecoratorContext<ThisParameterType<F>, F>,
