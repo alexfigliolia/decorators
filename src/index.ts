@@ -1,4 +1,6 @@
+export { animationFrame } from "./animationFrame";
 export { bound } from "./bound";
+export { cache } from "./cache";
 export { chainable } from "./chainable";
 export { debounce } from "./debounce";
 export { logBrowser } from "./logBrowser";
@@ -6,5 +8,4 @@ export { logServer } from "./logServer";
 export { measureBrowser } from "./measureBrowser";
 export { measureServer } from "./measureServer";
 export { throttle } from "./throttle";
-export { animationFrame } from "./animationFrame";
 export * from "./types";
