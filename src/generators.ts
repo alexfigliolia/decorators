@@ -5,7 +5,10 @@ import type {
   MethodGenerator,
 } from "./types";
 
-export const createMethodDecorator = <T, F extends GenericFunction>(
+export const createMethodDecorator = <
+  T extends GenericClass,
+  F extends GenericFunction,
+>(
   func: MethodGenerator<T, F>,
 ) => {
   return (

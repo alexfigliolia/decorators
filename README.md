@@ -16,7 +16,12 @@ yarn add @figliolia/decorators
 2. [Cache](#cache)
 3. [Debounce](#debounce)
 4. [Throttle](#throttle)
-5. [Unsafe Chainable](#unsafe-chainable)
+5. [Animation Frame](#animation-frame)
+6. [Log Browser](#log-browser)
+7. [Log Server](#log-server)
+8. [Measure Browser](#measure-browser)
+9. [Measure Server](#measure-server)
+10. [Unsafe Chainable](#unsafe-chainable)
 
 ## API - Generators
 1. [Create Method Decorator](#create-method-decorator)
@@ -94,15 +99,43 @@ const instance = new MyClass();
 void instance.getData("searching for something");
 ```
 
-### Log
-Logs invokation arguments and return values for a given method as long as the `NODE_ENV` is not `production`
-
-This method will use native colorized logging (in chrome and firefox) when used on the client while falling back to [Chalk]("https://www.npmjs.com/package/chalk") serverside
+### Animation Frame
+Invokes the target method using calls to `requestAnimationFrame`
 ```typescript
-import { log } from "@figliolia/decorators";
+import { animationFrame } from "@figliolia/decorators";
 
 class MyClass {
-  @log
+  node: HTMLElement;
+  constructor(ID: string) {
+    this.node = document.getElementById(ID);
+  }
+
+  @animationFrame
+  public animate() {
+    const { translate } = this.node.style;
+    const current = parseInt(translate.slice(0, -2));
+    if(current === 100) {
+      return;
+    }
+    this.node.style.translate = `${current + 1}px`;
+    this.animate()
+  }
+}
+
+const instance = new MyClass("elementID");
+// animates an element's translateX property
+instance.animate();
+```
+
+### Log Browser
+Logs invokation arguments and return values for a given method as long as the `NODE_ENV` is not `production`
+
+This method will use native colorized logging (in chrome and firefox)
+```typescript
+import { logBrowser } from "@figliolia/decorators";
+
+class MyClass {
+  @logBrowser
   public async getData(query: string) {
     return fetch(`/api/data?query=${query}`);
   }
@@ -110,6 +143,60 @@ class MyClass {
 
 const instance = new MyClass();
 void instance.getData("searching for something");
+```
+
+### Log Server
+Logs invokation arguments and return values for a given method as long as the `NODE_ENV` is not `production`
+
+This method will use [Chalk]("https://www.npmjs.com/package/chalk") for colorized logging
+```typescript
+import { logServer } from "@figliolia/decorators";
+
+class MyClass {
+  @logServer
+  public async getData(query: string) {
+    return fetch(`/api/data?query=${query}`);
+  }
+}
+
+const instance = new MyClass();
+void instance.getData("searching for something");
+```
+
+### Measure Browser
+Logs the duration occupied by the target method at runtime
+```typescript
+import { measureBrowser } from "@figliolia/decorators";
+
+class MyClass {
+  @measureBrowser
+  public expensive() {
+    for(let i = 0; i < 1_000_000; i++) {
+
+    }
+  }
+}
+
+const instance = new MyClass();
+instance.expensive();
+```
+
+### Measure Server
+Logs the duration occupied by the target method at runtime
+```typescript
+import { measureServer } from "@figliolia/decorators";
+
+class MyClass {
+  @measureServer
+  public expensive() {
+    for(let i = 0; i < 1_000_000; i++) {
+
+    }
+  }
+}
+
+const instance = new MyClass();
+instance.expensive();
 ```
 
 ### Unsafe Chainable
